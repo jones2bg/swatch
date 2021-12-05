@@ -1,23 +1,44 @@
-import logo from './logo.svg';
 import './App.css';
+import { Swatch } from './Swatch';
+import {useState} from 'react';
+import {Picker} from './Picker';
+
+
+const initialColors = [
+  {hex: '#FF0000', name: 'red'},
+  {hex: '#FF9900', name: 'pumpkin'},
+  {hex: '#6495ED', name: 'cornflower'},
+  {hex: '#008080', name: 'teal'},
+  {hex: '#CD853F', name: 'peru'},
+  {hex: '#FFF00F', name: 'yellow'},
+];
 
 function App() {
+  const [colors, setColors] = useState(initialColors);
+
+  const removeColor = name => {
+    setColors(colors.filter(color => color.name !== name));
+  };
+
+  const addColor = newColor => {
+    setColors([newColor, ...colors]);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Picker add={addColor} /> 
+      {
+      colors.map(color =>
+        <Swatch
+            key={color.name}
+            name={color.name}
+            hex={color.hex}
+            remove={removeColor}
+          />
+          
+        )
+      }
+      
     </div>
   );
 }
